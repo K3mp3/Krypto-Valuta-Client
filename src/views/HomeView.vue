@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import HomePage from '../components/HomePage.vue'
+import SignInForm from '@/components/user/SignInForm.vue'
+import SignUpForm from '@/components/user/SignUpForm.vue'
 </script>
 
 <template>
   <main>
-    <HomePage />
+    <SignUpForm />
+    <SignInForm />
   </main>
 </template>
