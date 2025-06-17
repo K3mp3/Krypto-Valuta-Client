@@ -1,19 +1,11 @@
 <script setup lang="ts">
+import router from '@/router'
 import { ref } from 'vue'
 
 const email = ref('')
 const password = ref('')
 
-// Debug function to check values
-const debugValues = () => {
-  console.log('Email ref value:', email.value)
-  console.log('Password ref value:', password.value)
-}
-
 const handleSignIn = async () => {
-  // Debug the values before creating user object
-  debugValues()
-
   // Validate that fields are not empty
   if (!email.value.trim() || !password.value.trim()) {
     alert('Please fill in both email and password')
@@ -25,8 +17,6 @@ const handleSignIn = async () => {
     password: password.value,
   }
 
-  console.log('User object:', user)
-
   try {
     const response = await fetch('http://localhost:3000/api/user/sign-in', {
       method: 'POST',
@@ -36,11 +26,20 @@ const handleSignIn = async () => {
       body: JSON.stringify(user),
     })
 
-    console.log('Response status:', response.status)
     const data = await response.json()
-    console.log('Response data:', data)
+
+    if (response.ok && data.success) {
+      // Spara JWT-token i localStorage
+      localStorage.setItem('token', data.data.token)
+
+      // Navigera till user-home
+      router.push('/user-home')
+    } else {
+      alert('Fel vid inloggning: ' + (data.message || 'Okänt fel'))
+    }
   } catch (error) {
     console.error('Error:', error)
+    alert('Fel vid inloggning')
   }
 }
 </script>
@@ -66,13 +65,11 @@ const handleSignIn = async () => {
   flex-direction: column;
   gap: 16px;
 }
-
 .sign-in-form input {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
 .sign-in-form button {
   padding: 10px;
   background: #007bff;
@@ -81,7 +78,6 @@ const handleSignIn = async () => {
   border-radius: 4px;
   cursor: pointer;
 }
-
 .sign-in-form button:hover {
   background: #0056b3;
 }

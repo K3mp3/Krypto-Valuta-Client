@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import SignInForm from '@/components/user/SignInForm.vue'
-import SignUpForm from '@/components/user/SignUpForm.vue'
+import UserHome from '@/components/user/UserHome.vue'
 </script>
 
 <template>
-  <main>
-    <SignUpForm />
-    <SignInForm />
-  </main>
+  <UserHome />
 </template>
